@@ -11,8 +11,8 @@
 import requests
 from lxml import etree
 
-from data_saver import MyDataSaver
-from settings import INDEX_URL, HOST
+from data_saver import MyDataSaver, PROVINCE
+from settings import INDEX_URL, HOST, DATABASE
 
 
 class MySpider:
@@ -22,7 +22,7 @@ class MySpider:
 			'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36'
 		}
 		self.session.headers = self.headers
-		self.datasaver=MyDataSaver()
+		self.datasaver=MyDataSaver(DATABASE)
 
 	def get_province(self):
 		'''省级'''
@@ -39,10 +39,10 @@ class MySpider:
 		html = etree.HTML(resp.content)
 		countys = html.xpath("//tr[@class='citytr']")
 		for county in countys:
-			code = county.xpath("td[1]//text()")
-			name = county.xpath("td[2]//text()")
+			code = county.xpath("td[1]//text()")[0]
+			name = county.xpath("td[2]//text()")[0]
 			url = HOST + county.xpath("td[1]//a/@href")[0]
-			self.datasaver.save_data(code=code, name=name)
+			self.datasaver.save_data(code=code, name=name.encode('utf8'), parent_code=0, level=PROVINCE, province_code=int(code))
 			self.get_county(url)
 
 

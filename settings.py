@@ -17,4 +17,4 @@ DATABASE = {
 	'password': 'tx123321z',
 	'db': 'test'
 }
-HOST='http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2017'
+HOST='http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2017/'
